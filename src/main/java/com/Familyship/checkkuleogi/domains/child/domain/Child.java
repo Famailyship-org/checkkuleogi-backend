@@ -1,5 +1,6 @@
 package com.Familyship.checkkuleogi.domains.child.domain;
 
+import com.Familyship.checkkuleogi.global.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import com.Familyship.checkkuleogi.domains.user.domain.SiteUser;
