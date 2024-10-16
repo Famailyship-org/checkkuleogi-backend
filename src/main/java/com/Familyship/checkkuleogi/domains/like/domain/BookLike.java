@@ -35,4 +35,9 @@ public class BookLike extends BaseEntity {
         this.book = book;
         this.likedislike = likedislike;
     }
+
+    //필요 시 Setter사용
+    public void setLikedislike(boolean likedislike) {
+        this.likedislike = likedislike;
+    }
 }

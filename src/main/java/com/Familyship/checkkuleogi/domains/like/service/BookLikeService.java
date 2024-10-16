@@ -46,15 +46,37 @@ public class BookLikeService {
         return bookLikeRepository.save(bookLike);
     }
 
+    //전체 목록 조회
     public List<BookLike> getLikeDislike(Long childIdx){
         Child child = childRepository.findById(childIdx)
                 .orElseThrow(() -> new NotFoundException("어린이를 찾을 수 없습니다."));
         return bookLikeRepository.findByChild(child);
     }
 
-    public List<BookLike> getLikesDislikes(Long childIdx, boolean isLike){
+    //좋아요만 & 싫어요만 조회
+    public List<BookLike> getLikesDislikes(Long childIdx, boolean isLike) {
         Child child = childRepository.findById(childIdx)
                 .orElseThrow(() -> new NotFoundException("어린이를 찾을 수 없습니다."));
         return bookLikeRepository.findByChildAndLikedislike(child, isLike);
+    }
+
+    //좋아요 -> 싫어요 or 싫어요 -> 좋아요
+    public void updateLike(Long childIdx, Long bookIdx) {
+        Child child = childRepository.findById(childIdx)
+                .orElseThrow(() -> new NotFoundException("어린이를 찾을 수 없습니다."));
+
+        Book book = bookRepository.findById(bookIdx)
+                .orElseThrow(() -> new NotFoundException("책을 찾을 수 없습니다."));
+
+        BookLike existbookLike = bookLikeRepository.findByChildIdxAndBookIdx(childIdx, bookIdx)
+                .orElseThrow(() -> new NotFoundException("좋아요 기록을 찾을 수 없습니다."));
+
+        // 좋아요/싫어요 상태 변경
+        System.out.println(existbookLike.getBook().getIdx()+"asdffdasdffsda");
+        boolean newLikeDislike = !existbookLike.isLikedislike();
+
+        existbookLike.setLikedislike(newLikeDislike);
+
+        bookLikeRepository.save(existbookLike);
     }
 }

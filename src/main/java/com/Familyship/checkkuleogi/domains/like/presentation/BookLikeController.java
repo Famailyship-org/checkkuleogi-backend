@@ -3,7 +3,6 @@ package com.Familyship.checkkuleogi.domains.like.presentation;
 import com.Familyship.checkkuleogi.domains.like.domain.BookLike;
 import com.Familyship.checkkuleogi.domains.like.dto.LikeDto;
 import com.Familyship.checkkuleogi.domains.like.service.BookLikeService;
-import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
 import com.Familyship.checkkuleogi.global.domain.response.CommonResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -81,5 +80,11 @@ public class BookLikeController {
                 })
                 .collect(Collectors.toList());
         return CommonResponseEntity.success(result);
+    }
+
+    @PutMapping("/likedislike/change")
+    public CommonResponseEntity<String> changeLikeDislike(@RequestParam Long childIdx, @RequestParam Long bookIdx) {
+        bookLikeService.updateLike(childIdx, bookIdx);
+        return CommonResponseEntity.success("좋아요 싫어요 변경 완료");
     }
 }
