@@ -62,21 +62,35 @@ public class BookLikeService {
 
     //좋아요 -> 싫어요 or 싫어요 -> 좋아요
     public void updateLike(Long childIdx, Long bookIdx) {
-        Child child = childRepository.findById(childIdx)
+        childRepository.findById(childIdx)
                 .orElseThrow(() -> new NotFoundException("어린이를 찾을 수 없습니다."));
 
-        Book book = bookRepository.findById(bookIdx)
+        bookRepository.findById(bookIdx)
                 .orElseThrow(() -> new NotFoundException("책을 찾을 수 없습니다."));
 
         BookLike existbookLike = bookLikeRepository.findByChildIdxAndBookIdx(childIdx, bookIdx)
                 .orElseThrow(() -> new NotFoundException("좋아요 기록을 찾을 수 없습니다."));
 
         // 좋아요/싫어요 상태 변경
-        System.out.println(existbookLike.getBook().getIdx()+"asdffdasdffsda");
         boolean newLikeDislike = !existbookLike.isLikedislike();
 
         existbookLike.setLikedislike(newLikeDislike);
 
         bookLikeRepository.save(existbookLike);
+    }
+
+    //삭제
+    public void deleteLike(Long childIdx, Long bookIdx) {
+        childRepository.findById(childIdx)
+                .orElseThrow(() -> new NotFoundException("어린이를 찾을 수 없습니다."));
+
+        bookRepository.findById(bookIdx)
+                .orElseThrow(() -> new NotFoundException("책을 찾을 수 없습니다."));
+
+        BookLike bookLike = bookLikeRepository.findByChildIdxAndBookIdx(childIdx, bookIdx)
+                .orElseThrow(() -> new NotFoundException("좋아요 기록을 찾을 수 없습니다."));
+
+        // 좋아요/싫어요 삭제
+        bookLikeRepository.delete(bookLike);
     }
 }
