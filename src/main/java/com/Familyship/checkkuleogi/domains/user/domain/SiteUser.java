@@ -40,6 +40,6 @@ public class SiteUser extends BaseEntity {
     @Column(name = "user_role")
     private Role role;
 
-    @OneToMany(mappedBy = "parent")
-    private List<Child> children;
+//    @OneToMany(mappedBy = "parent")
+//    private List<Child> children;
 }

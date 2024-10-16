@@ -1,6 +1,7 @@
 package com.Familyship.checkkuleogi.domains.child.domain;
 
 import com.Familyship.checkkuleogi.global.domain.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import com.Familyship.checkkuleogi.domains.user.domain.SiteUser;
@@ -25,8 +26,12 @@ public class Child extends BaseEntity {
     @Column(name = "child_mbti")
     private String mbti;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "parent_id", referencedColumnName = "user_idx")
+//    private SiteUser parent;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "user_idx")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // 부모 쪽도 적용
     private SiteUser parent;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
