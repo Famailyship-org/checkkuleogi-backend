@@ -1,12 +1,18 @@
 package com.Familyship.checkkuleogi.domains.child.domain;
 
+import com.Familyship.checkkuleogi.domains.user.domain.SiteUser;
 import com.Familyship.checkkuleogi.global.domain.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import com.Familyship.checkkuleogi.domains.user.domain.SiteUser;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Child extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +38,8 @@ public class Child extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "child_mbti_id") // 외래 키
     private ChildMBTI childMBTI;
+
+    public void updateMBTI(String mbti) {
+        this.mbti = mbti;
+    }
 }
