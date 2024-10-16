@@ -11,6 +11,8 @@ import com.Familyship.checkkuleogi.domains.like.exception.DuplicateLikeException
 import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BookLikeServcie {
     private final BookLikeRepository bookLikeRepository;
@@ -42,5 +44,11 @@ public class BookLikeServcie {
                 .build();
 
         return bookLikeRepository.save(bookLike);
+    }
+
+    public List<BookLike> getLikeDislike(Long childIdx){
+        Child child = childRepository.findById(childIdx)
+                .orElseThrow(() -> new NotFoundException("어린이를 찾을 수 없습니다."));
+        return bookLikeRepository.findByChild(child);
     }
 }

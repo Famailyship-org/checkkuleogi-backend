@@ -4,10 +4,7 @@ import com.Familyship.checkkuleogi.domains.book.domain.Book;
 import com.Familyship.checkkuleogi.domains.child.domain.Child;
 import com.Familyship.checkkuleogi.global.domain.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
