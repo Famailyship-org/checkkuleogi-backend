@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BookLikeServcie {
+public class BookLikeService {
     private final BookLikeRepository bookLikeRepository;
     private final ChildRepository childRepository;
     private final BookRepository bookRepository;
 
-    public BookLikeServcie(BookLikeRepository bookLikeRepository, ChildRepository childRepository, BookRepository bookRepository) {
+    public BookLikeService(BookLikeRepository bookLikeRepository, ChildRepository childRepository, BookRepository bookRepository) {
         this.bookLikeRepository = bookLikeRepository;
         this.childRepository = childRepository;
         this.bookRepository = bookRepository;
@@ -40,7 +40,7 @@ public class BookLikeServcie {
         BookLike bookLike = BookLike.builder()
                 .child(child)
                 .book(book)
-                .isLike(isLike)
+                .likedislike(isLike)
                 .build();
 
         return bookLikeRepository.save(bookLike);
@@ -50,5 +50,11 @@ public class BookLikeServcie {
         Child child = childRepository.findById(childIdx)
                 .orElseThrow(() -> new NotFoundException("어린이를 찾을 수 없습니다."));
         return bookLikeRepository.findByChild(child);
+    }
+
+    public List<BookLike> getLikesDislikes(Long childIdx, boolean isLike){
+        Child child = childRepository.findById(childIdx)
+                .orElseThrow(() -> new NotFoundException("어린이를 찾을 수 없습니다."));
+        return bookLikeRepository.findByChildAndLikedislike(child, isLike);
     }
 }

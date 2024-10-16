@@ -8,6 +8,6 @@ import lombok.Getter;
 public class LikeDto {
     private Long childIdx;
     private Long bookIdx;
-    private boolean isLike;
+    private boolean likedislike;
 }
 

@@ -2,7 +2,7 @@ package com.Familyship.checkkuleogi.domains.like.presentation;
 
 import com.Familyship.checkkuleogi.domains.like.domain.BookLike;
 import com.Familyship.checkkuleogi.domains.like.dto.LikeDto;
-import com.Familyship.checkkuleogi.domains.like.service.BookLikeServcie;
+import com.Familyship.checkkuleogi.domains.like.service.BookLikeService;
 import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
 import com.Familyship.checkkuleogi.global.domain.response.CommonResponseEntity;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookLikeController {
 
-    private final BookLikeServcie bookLikeService;
+    private final BookLikeService bookLikeService;
 
     @PostMapping("/like")
     public CommonResponseEntity<LikeDto> createBookLike(@RequestParam Long childIdx,
@@ -29,7 +29,7 @@ public class BookLikeController {
         LikeDto res = new LikeDto(
                 bookLike.getChild().getIdx(),
                 bookLike.getBook().getIdx(),
-                bookLike.isLike()
+                bookLike.isLikedislike()
         );
         return CommonResponseEntity.success(res);
     }
@@ -46,15 +46,40 @@ public class BookLikeController {
                 .map(ld -> {
                     Map<String, Object> res = new HashMap<>();
                     res.put("book", Map.of(
-                            "id", ld.getBook().getIdx(),
+                            "book_idx", ld.getBook().getIdx(),
                             "title", ld.getBook().getTitle()
                     ));
-                    res.put("like", ld.isLike());
+                    res.put("like", ld.isLikedislike());
                     return res;
                 })
                 .collect(Collectors.toList());
         return CommonResponseEntity.success(result);
     }
 
+    @GetMapping("/onlylikes/{child_idx}")
+    public CommonResponseEntity<List<Map<String, Object>>> getLikes(
+            @PathVariable("child_idx") Long childIdx,
+            @RequestParam boolean isLike) {
+        List<BookLike> likes = bookLikeService.getLikesDislikes(childIdx, isLike);
 
+        if (likes.isEmpty()) {
+            if(isLike) {
+                return CommonResponseEntity.error(null, HttpStatus.NOT_FOUND, "좋아요 기록이 없습니다.");
+            }else{
+                return CommonResponseEntity.error(null, HttpStatus.NOT_FOUND, "싫어요 기록이 없습니다.");
+            }
+
+        }
+        List<Map<String, Object>> result = likes.stream()
+                .map(like -> {
+                    Map<String, Object> res = new HashMap<>();
+                    res.put("book", Map.of(
+                            "book_idx", like.getBook().getIdx(),
+                            "title", like.getBook().getTitle()
+                    ));
+                    return res;
+                })
+                .collect(Collectors.toList());
+        return CommonResponseEntity.success(result);
+    }
 }

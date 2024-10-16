@@ -27,12 +27,12 @@ public class BookLike extends BaseEntity {
     private Book book;
 
     @Column(name = "is_like")
-    private boolean isLike;
+    private boolean likedislike;
 
     @Builder
-    public BookLike(Child child, Book book, boolean isLike) {
+    public BookLike(Child child, Book book, boolean likedislike) {
         this.child = child;
         this.book = book;
-        this.isLike = isLike;
+        this.likedislike = likedislike;
     }
 }

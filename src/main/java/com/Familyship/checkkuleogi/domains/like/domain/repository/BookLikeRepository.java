@@ -11,4 +11,6 @@ public interface BookLikeRepository extends JpaRepository<BookLike, Long> {
     boolean existsByChildIdxAndBookIdx(Long childIdx, Long bookIdx);
 
     List<BookLike> findByChild(Child child);
+
+    List<BookLike> findByChildAndLikedislike(Child child, boolean like);
 }
