@@ -1,7 +1,7 @@
 package com.Familyship.checkkuleogi.domains.user.presentation;
-
 import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
 import com.Familyship.checkkuleogi.global.domain.response.CommonResponseEntity;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
