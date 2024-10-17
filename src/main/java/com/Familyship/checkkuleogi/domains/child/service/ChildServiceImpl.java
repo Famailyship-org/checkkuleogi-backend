@@ -128,16 +128,15 @@ public class ChildServiceImpl implements ChildService {
         // 논리적 삭제 -> 좋아요 테이블에 childIdx를 기준으로 좋아요가 되어 있는 책을 모두 찾아서 idDeleted 컬럼을 N -> Y로 바꿔준다.
         List<BookLike> bookList = likeRepository.findByChildIdxAndIsDeleted(child.getIdx(), false)
                 .orElseThrow(() -> new NotFoundException("좋아요를 한 책이 없습니다"));
-        bookList.stream().forEach(books -> books.updateIsDeleted(true));
+        bookList.forEach(books -> books.updateIsDeleted(true));
 
         // MBTI 로우 테이블 삭제
         childMBTIRepository.delete(childMBTI);
     }
 
     private Child isChildExisted(String childName) {
-        Child child = childRepository.findByAndName(childName)
+        return childRepository.findByAndName(childName)
                 .orElseThrow(() -> new NotFoundException("아이가 등록되어 있지 않습니다"));
-        return child;
     }
 
     @Transactional
@@ -160,7 +159,6 @@ public class ChildServiceImpl implements ChildService {
         String mbtiResult = "";
 
         mbtiResult = calcMBTIResult(mbtiPercent.length, arr, mbtiPercent, mbtiResult);
-        System.out.println("============ mbti result " + mbtiResult);
         saveMBTI(mbtiPercent, child.getIdx());
         child.updateMBTI(mbtiResult);
         return UpdateChildMBTIResponseDTO.builder().childName(child.getName()).mbti(mbtiResult).build();
