@@ -3,12 +3,11 @@ package com.Familyship.checkkuleogi.domains.like.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
-public class LikeDto {
-    private Long childIdx;
-    private Long bookIdx;
-    private boolean likedislike;
+public class LikeListResponseDto {
+    private List<LikeResponseDto> likes;
 }
-
 

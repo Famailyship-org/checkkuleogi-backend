@@ -5,10 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class LikeDto {
+public class LikeResponseDto {
     private Long childIdx;
     private Long bookIdx;
     private boolean likedislike;
 }
-
-
