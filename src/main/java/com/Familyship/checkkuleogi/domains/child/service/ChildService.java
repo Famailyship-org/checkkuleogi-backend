@@ -8,5 +8,5 @@ public interface ChildService {
 
     ReadChildResponseDTO readMBTI(ReadChildRequestDTO readChildRequestDTO);
 
-    DeleteChildMBTIResponseDTO deleteMBTI(String childName);
+    void deleteMBTI(DeleteChildMBTIRequestDTO deleteChildMBTIRequestDTO);
 }

@@ -15,7 +15,7 @@ public class ChildController {
 
     private final ChildService childService;
 
-    @PostMapping("/mbti")
+    @PostMapping("/mbti/")
     public CommonResponseEntity<CreateChildResponseDTO> createMBTI(@RequestBody CreateChildRequestDTO createChildRequestDTO) {
         return success(childService.createMBTI(createChildRequestDTO));
     }
@@ -26,7 +26,8 @@ public class ChildController {
     }
 
     @DeleteMapping("/mbti/{childName}")
-    public CommonResponseEntity<DeleteChildMBTIResponseDTO> deleteMBTI(@PathVariable String childName) {
-        return success(childService.deleteMBTI(childName));
+    public CommonResponseEntity deleteMBTI(@RequestBody DeleteChildMBTIRequestDTO deleteChildMBTIRequestDTO) {
+        childService.deleteMBTI(deleteChildMBTIRequestDTO);
+        return success(true);
     }
 }
