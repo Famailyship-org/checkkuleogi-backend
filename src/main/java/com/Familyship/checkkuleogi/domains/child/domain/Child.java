@@ -42,4 +42,8 @@ public class Child extends BaseEntity {
     public void updateMBTI(String mbti) {
         this.mbti = mbti;
     }
+
+    public boolean isMBTINull(String mbti) {
+        return this.mbti == null;
+    }
 }
