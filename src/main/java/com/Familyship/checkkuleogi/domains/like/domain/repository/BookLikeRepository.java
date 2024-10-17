@@ -1,8 +1,8 @@
 package com.Familyship.checkkuleogi.domains.like.domain.repository;
 
-import com.Familyship.checkkuleogi.domains.book.domain.Book;
 import com.Familyship.checkkuleogi.domains.child.domain.Child;
 import com.Familyship.checkkuleogi.domains.like.domain.BookLike;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

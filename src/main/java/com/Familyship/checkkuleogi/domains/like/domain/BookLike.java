@@ -3,6 +3,7 @@ package com.Familyship.checkkuleogi.domains.like.domain;
 import com.Familyship.checkkuleogi.domains.book.domain.Book;
 import com.Familyship.checkkuleogi.domains.child.domain.Child;
 import com.Familyship.checkkuleogi.global.domain.BaseEntity;
+
 import jakarta.persistence.*;
 import lombok.*;
 

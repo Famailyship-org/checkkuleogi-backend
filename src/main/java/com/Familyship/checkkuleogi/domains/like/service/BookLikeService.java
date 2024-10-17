@@ -1,14 +1,15 @@
 package com.Familyship.checkkuleogi.domains.like.service;
 
-
 import com.Familyship.checkkuleogi.domains.book.domain.Book;
 import com.Familyship.checkkuleogi.domains.book.domain.repository.BookRepository;
 import com.Familyship.checkkuleogi.domains.child.domain.Child;
 import com.Familyship.checkkuleogi.domains.child.domain.repository.ChildRepository;
 import com.Familyship.checkkuleogi.domains.like.domain.repository.BookLikeRepository;
 import com.Familyship.checkkuleogi.domains.like.domain.BookLike;
+
 import com.Familyship.checkkuleogi.domains.like.exception.DuplicateLikeException;
 import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class BookLikeService {
                 .orElseThrow(() -> new NotFoundException("책을 찾을 수 없습니다."));
 
         BookLike existbookLike = bookLikeRepository.findByChildIdxAndBookIdx(childIdx, bookIdx)
-                .orElseThrow(() -> new NotFoundException("좋아요 기록을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("좋아요/싫어요 기록을 찾을 수 없습니다."));
 
         // 좋아요/싫어요 상태 변경
         boolean newLikeDislike = !existbookLike.isLikedislike();
@@ -88,7 +89,7 @@ public class BookLikeService {
                 .orElseThrow(() -> new NotFoundException("책을 찾을 수 없습니다."));
 
         BookLike bookLike = bookLikeRepository.findByChildIdxAndBookIdx(childIdx, bookIdx)
-                .orElseThrow(() -> new NotFoundException("좋아요 기록을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("좋아요/싫어요 기록을 찾을 수 없습니다."));
 
         // 좋아요/싫어요 삭제
         bookLikeRepository.delete(bookLike);
