@@ -19,19 +19,21 @@ public class ChildServiceImpl implements ChildService {
     private final ChildRepository childRepository;
 
     @Override
-    public CreateChildResponseDTO createMBTI(CreateChildRequestDTO childCreateRequestDTO) {
+    public CreateChildResponseDTO createMBTI(CreateChildRequestDTO createChildRequestDTO) {
+
+        // UserId가 있는지 먼저 확인 -> 추후에 토큰 처리하기 때문에 빼버림
 
         // DTO를 하나씩 빼서 MBTI 성향 만들기
-        Child child = childRepository.findByIdx(childCreateRequestDTO.getChildId())
-                .orElseThrow(() -> new NotFoundException("Child not found"));
+        Child child = childRepository.findByAndName(createChildRequestDTO.getChildName())
+                .orElseThrow(() -> new NotFoundException("child not found"));
 
         // 문항마다 yes, no가 있고 해당 yes이면 E - I
-        int[] arr = Arrays.stream(childCreateRequestDTO.getSurveys()).toArray();
+        int[] arr = Arrays.stream(createChildRequestDTO.getSurveys()).toArray();
         int[] mbtiPercent = new int[4];
         String mbtiResult = "";
 
         // MBTI 설정 로직
-        for (int i = 0; i < childCreateRequestDTO.getSurveys().length; i++) {
+        for (int i = 0; i < createChildRequestDTO.getSurveys().length; i++) {
             if (i == 0) { // 1번 문항 - E & I
                 if (arr[i] == 1) { // yes - E 성향
                     mbtiPercent[i] = 50;

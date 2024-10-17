@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class CreateChildRequestDTO {
-    private Long childId;
+    private String childName;
     private int[] surveys;
     private float[] surveysResult;
 }
