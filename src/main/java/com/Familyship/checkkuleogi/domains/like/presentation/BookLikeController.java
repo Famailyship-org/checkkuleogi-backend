@@ -85,11 +85,12 @@ public class BookLikeController {
         return CommonResponseEntity.success(result);
     }
 
-    @PutMapping("/change")
+    @PatchMapping("/change")
     public CommonResponseEntity<String> changeLikeDislike(@RequestParam Long childIdx, @RequestParam Long bookIdx) {
         bookLikeService.updateLike(childIdx, bookIdx);
         return CommonResponseEntity.success("좋아요 싫어요 변경 완료");
     }
+
 
     @DeleteMapping("/delete")
     public CommonResponseEntity<String> deleteLike(@RequestParam Long childIdx, @RequestParam Long bookIdx) {
