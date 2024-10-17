@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/likedislike")
+@RequestMapping("api/v1/likedislike")
 @RequiredArgsConstructor
 public class BookLikeController {
 
