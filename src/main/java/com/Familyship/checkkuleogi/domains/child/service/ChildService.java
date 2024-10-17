@@ -9,4 +9,6 @@ public interface ChildService {
     ReadChildResponseDTO readMBTI(ReadChildRequestDTO readChildRequestDTO);
 
     void deleteMBTI(DeleteChildMBTIRequestDTO deleteChildMBTIRequestDTO);
+
+    UpdateChildMBTIResponseDTO updateMBTI(UpdateChildMBTIRequestDTO updateChildMBTIRequestDTO);
 }
