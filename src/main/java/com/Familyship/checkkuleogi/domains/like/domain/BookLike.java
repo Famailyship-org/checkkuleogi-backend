@@ -4,11 +4,17 @@ import com.Familyship.checkkuleogi.domains.book.domain.Book;
 import com.Familyship.checkkuleogi.domains.child.domain.Child;
 import com.Familyship.checkkuleogi.global.domain.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
 @Getter
 @Table(name = "book_like")
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookLike extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +31,12 @@ public class BookLike extends BaseEntity {
 
     @Column(name = "is_like")
     private boolean isLike;
+
+    @Builder.Default()
+    @Column(name = "is_Deleted", columnDefinition = "DEFAULT false")
+    private Boolean isDeleted = false;
+
+    public void updateIsDeleted(Boolean isDeleted) {
+
+    }
 }

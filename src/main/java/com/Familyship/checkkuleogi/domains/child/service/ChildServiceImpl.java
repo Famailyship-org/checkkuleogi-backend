@@ -2,23 +2,24 @@ package com.Familyship.checkkuleogi.domains.child.service;
 
 import com.Familyship.checkkuleogi.domains.child.domain.Child;
 import com.Familyship.checkkuleogi.domains.child.domain.ChildMBTI;
-import com.Familyship.checkkuleogi.domains.child.dto.CreateChildRequestDTO;
-import com.Familyship.checkkuleogi.domains.child.dto.CreateChildResponseDTO;
-import com.Familyship.checkkuleogi.domains.child.dto.ReadChildRequestDTO;
-import com.Familyship.checkkuleogi.domains.child.dto.ReadChildResponseDTO;
+import com.Familyship.checkkuleogi.domains.child.dto.*;
 import com.Familyship.checkkuleogi.domains.child.infra.ChildMBTIRepository;
 import com.Familyship.checkkuleogi.domains.child.infra.ChildRepository;
+import com.Familyship.checkkuleogi.domains.like.Infra.LikeRepository;
+import com.Familyship.checkkuleogi.domains.like.domain.BookLike;
 import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class ChildServiceImpl implements ChildService {
     private final ChildMBTIRepository childMBTIRepository;
     private final ChildRepository childRepository;
+    private final LikeRepository likeRepository;
 
     @Override
     public CreateChildResponseDTO createMBTI(CreateChildRequestDTO createChildRequestDTO) {
@@ -91,11 +92,24 @@ public class ChildServiceImpl implements ChildService {
 
     @Override
     public ReadChildResponseDTO readMBTI(ReadChildRequestDTO readChildRequestDTO) {
-
         Child child = childRepository.findByAndName(readChildRequestDTO.getChildName())
                 .orElseThrow(() -> new NotFoundException("아이가 등록되어 있지 않습니다"));
 
         return ReadChildResponseDTO.builder()
                 .mbti(child.getMbti()).build();
+    }
+
+    @Override
+    public DeleteChildMBTIResponseDTO deleteMBTI(String childName) {
+        Child child = childRepository.findByAndName(childName)
+                .orElseThrow(() -> new NotFoundException("아이가 등록되어 있지 않습니다"));
+
+        // 논리적 삭제 -> 좋아요 테이블에 childIdx를 기준으로 좋아요가 되어 있는 책을 모두 찾아서 idDeleted 컬럼을 N -> Y로 바꿔준다.
+        List<BookLike> bookList = likeRepository.findByChildIdxAndIsDeleted(child.getIdx(), false)
+                .orElseThrow(() -> new NotFoundException("좋아요를 한 책이 없습니다"));
+        bookList.stream().forEach(books -> books.updateIsDeleted(true));
+
+        // 배치를 사용하여 한 달 후에 삭제한다.
+        return null;
     }
 }

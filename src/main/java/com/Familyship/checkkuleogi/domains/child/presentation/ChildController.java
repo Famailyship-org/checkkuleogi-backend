@@ -1,9 +1,6 @@
 package com.Familyship.checkkuleogi.domains.child.presentation;
 
-import com.Familyship.checkkuleogi.domains.child.dto.CreateChildRequestDTO;
-import com.Familyship.checkkuleogi.domains.child.dto.CreateChildResponseDTO;
-import com.Familyship.checkkuleogi.domains.child.dto.ReadChildRequestDTO;
-import com.Familyship.checkkuleogi.domains.child.dto.ReadChildResponseDTO;
+import com.Familyship.checkkuleogi.domains.child.dto.*;
 import com.Familyship.checkkuleogi.domains.child.service.ChildService;
 import com.Familyship.checkkuleogi.global.domain.response.CommonResponseEntity;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +23,10 @@ public class ChildController {
     @GetMapping("/mbti")
     public CommonResponseEntity<ReadChildResponseDTO> getMBTI(@RequestBody ReadChildRequestDTO readChildRequestDTO) {
         return success(childService.readMBTI(readChildRequestDTO));
+    }
+
+    @DeleteMapping("/mbti/{childName}")
+    public CommonResponseEntity<DeleteChildMBTIResponseDTO> deleteMBTI(@PathVariable String childName) {
+        return success(childService.deleteMBTI(childName));
     }
 }
