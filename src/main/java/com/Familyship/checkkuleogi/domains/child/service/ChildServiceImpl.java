@@ -10,14 +10,15 @@ import com.Familyship.checkkuleogi.domains.child.infra.ChildRepository;
 import com.Familyship.checkkuleogi.domains.like.Infra.LikeRepository;
 import com.Familyship.checkkuleogi.domains.like.domain.BookLike;
 import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ChildServiceImpl implements ChildService {
     private final ChildMBTIRepository childMBTIRepository;
     private final ChildRepository childRepository;
@@ -139,23 +140,29 @@ public class ChildServiceImpl implements ChildService {
         return child;
     }
 
+    @Transactional
     @Override
     public UpdateChildMBTIResponseDTO updateMBTI(UpdateChildMBTIRequestDTO updateChildMBTIRequestDTO) {
         Child child = isChildExisted(updateChildMBTIRequestDTO.getChildName());
+        ChildMBTI childMBTI = childMBTIRepository.findByChildIdx(child.getIdx())
+                .orElseThrow(() -> new NotFoundException("저장된 MBTI가 없습니다"));
 
         // 재검사 대상이 아닐 경우 새로운 검사로 API를 다시 요청하게 만든다.
         if (child.isMBTINull(child.getMbti())) {
             throw new NotFoundException("기존의 검사 결과가 없으므로 재검사 대상이 아닙니다.");
         }
 
+        //기존의 MBTI를 먼저 삭제합니다
+        childMBTIRepository.delete(childMBTI);
+
         int[] arr = Arrays.stream(updateChildMBTIRequestDTO.getSurveys()).toArray();
         int[] mbtiPercent = new int[updateChildMBTIRequestDTO.getSurveys().length];
         String mbtiResult = "";
 
         mbtiResult = calcMBTIResult(mbtiPercent.length, arr, mbtiPercent, mbtiResult);
+        System.out.println("============ mbti result " + mbtiResult);
         saveMBTI(mbtiPercent, child.getIdx());
         child.updateMBTI(mbtiResult);
-
         return UpdateChildMBTIResponseDTO.builder().childName(child.getName()).mbti(mbtiResult).build();
     }
 }
