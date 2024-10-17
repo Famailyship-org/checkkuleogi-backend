@@ -4,6 +4,8 @@ import com.Familyship.checkkuleogi.domains.child.domain.Child;
 import com.Familyship.checkkuleogi.domains.child.domain.ChildMBTI;
 import com.Familyship.checkkuleogi.domains.child.dto.CreateChildRequestDTO;
 import com.Familyship.checkkuleogi.domains.child.dto.CreateChildResponseDTO;
+import com.Familyship.checkkuleogi.domains.child.dto.ReadChildRequestDTO;
+import com.Familyship.checkkuleogi.domains.child.dto.ReadChildResponseDTO;
 import com.Familyship.checkkuleogi.domains.child.infra.ChildMBTIRepository;
 import com.Familyship.checkkuleogi.domains.child.infra.ChildRepository;
 import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
@@ -22,7 +24,6 @@ public class ChildServiceImpl implements ChildService {
     public CreateChildResponseDTO createMBTI(CreateChildRequestDTO createChildRequestDTO) {
 
         // UserId가 있는지 먼저 확인 -> 추후에 토큰 처리하기 때문에 빼버림
-
         // DTO를 하나씩 빼서 MBTI 성향 만들기
         Child child = childRepository.findByAndName(createChildRequestDTO.getChildName())
                 .orElseThrow(() -> new NotFoundException("child not found"));
@@ -86,5 +87,15 @@ public class ChildServiceImpl implements ChildService {
                 mbti(child.getMbti()).
                 parentName(child.getParent().getName()).
                 gender(child.getGender()).build();
+    }
+
+    @Override
+    public ReadChildResponseDTO readMBTI(ReadChildRequestDTO readChildRequestDTO) {
+
+        Child child = childRepository.findByAndName(readChildRequestDTO.getChildName())
+                .orElseThrow(() -> new NotFoundException("아이가 등록되어 있지 않습니다"));
+
+        return ReadChildResponseDTO.builder()
+                .mbti(child.getMbti()).build();
     }
 }
