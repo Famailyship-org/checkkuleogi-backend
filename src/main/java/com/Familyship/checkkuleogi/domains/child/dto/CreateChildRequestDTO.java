@@ -6,5 +6,4 @@ import lombok.Getter;
 public class CreateChildRequestDTO {
     private String childName;
     private int[] surveys;
-    private float[] surveysResult;
 }
