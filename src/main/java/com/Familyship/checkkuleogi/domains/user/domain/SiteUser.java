@@ -39,7 +39,4 @@ public class SiteUser extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private Role role;
-
-    @OneToMany(mappedBy = "parent")
-    private List<Child> children;
 }
