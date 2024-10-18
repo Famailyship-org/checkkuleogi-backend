@@ -28,6 +28,6 @@ public class Book extends BaseEntity {
     private String content;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_mbti_id") // 외래 키
+    @JoinColumn(name = "book_mbti_id")
     private BookMBTI bookMBTI;
 }

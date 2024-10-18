@@ -24,9 +24,4 @@ public class ChildMBTI extends BaseEntity {
 
     @Column(name = "mbti_j")
     private int mbtiJ;
-
-    //    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "child_idx", referencedColumnName = "child_idx")
-    @Column(name = "child_idx")
-    private Long childIdx;
 }

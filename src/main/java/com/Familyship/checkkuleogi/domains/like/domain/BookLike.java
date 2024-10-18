@@ -28,7 +28,7 @@ public class BookLike extends BaseEntity {
     private Book book;
 
     @Column(name = "is_like")
-    private boolean likedislike;
+    private Boolean likedislike;
 
     @Builder
     public BookLike(Child child, Book book, boolean likedislike) {

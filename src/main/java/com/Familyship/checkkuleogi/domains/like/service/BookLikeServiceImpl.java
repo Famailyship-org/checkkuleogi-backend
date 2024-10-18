@@ -44,14 +44,14 @@ public class BookLikeServiceImpl implements BookLikeService{
         BookLike bookLike = BookLike.builder()
                 .child(child)
                 .book(book)
-                .likedislike(dto.isLikedislike())
+                .likedislike(dto.getLikedislike())
                 .build();
         bookLikeRepository.save(bookLike);
 
         return new LikeResponseDto(
                 bookLike.getChild().getIdx(),
                 bookLike.getBook().getIdx(),
-                bookLike.isLikedislike()
+                bookLike.getLikedislike()
         );
     }
 
@@ -65,7 +65,7 @@ public class BookLikeServiceImpl implements BookLikeService{
         }
 
         List<LikeResponseDto> responseList = likedislike.stream()
-                .map(ld -> new LikeResponseDto(ld.getChild().getIdx(), ld.getBook().getIdx(), ld.isLikedislike()))
+                .map(ld -> new LikeResponseDto(ld.getChild().getIdx(), ld.getBook().getIdx(), ld.getLikedislike()))
                 .collect(Collectors.toList());
 
         return new LikeListResponseDto(responseList);
@@ -81,7 +81,7 @@ public class BookLikeServiceImpl implements BookLikeService{
         }
 
         List<LikeResponseDto> responseList = likes.stream()
-                .map(like -> new LikeResponseDto(like.getChild().getIdx(), like.getBook().getIdx(), like.isLikedislike()))
+                .map(like -> new LikeResponseDto(like.getChild().getIdx(), like.getBook().getIdx(), like.getLikedislike()))
                 .collect(Collectors.toList());
 
         return new LikeListResponseDto(responseList);
@@ -97,7 +97,7 @@ public class BookLikeServiceImpl implements BookLikeService{
         }
 
         List<LikeResponseDto> responseList = likes.stream()
-                .map(like -> new LikeResponseDto(like.getChild().getIdx(), like.getBook().getIdx(), like.isLikedislike()))
+                .map(like -> new LikeResponseDto(like.getChild().getIdx(), like.getBook().getIdx(), like.getLikedislike()))
                 .collect(Collectors.toList());
 
         return new LikeListResponseDto(responseList);
@@ -108,7 +108,7 @@ public class BookLikeServiceImpl implements BookLikeService{
     public void updateLike(LikeDto dto) {
         BookLike existbookLike = findBookLikeByChildAndBook(dto.getChildIdx(), dto.getBookIdx());
 
-        boolean newLikeDislike = !existbookLike.isLikedislike();
+        boolean newLikeDislike = !existbookLike.getLikedislike();
         existbookLike.updateLikedislike(newLikeDislike);
 
         bookLikeRepository.save(existbookLike);
