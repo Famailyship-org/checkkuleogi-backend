@@ -7,6 +7,7 @@ import com.Familyship.checkkuleogi.global.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Builder
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
