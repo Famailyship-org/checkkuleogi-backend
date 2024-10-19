@@ -4,25 +4,23 @@ import com.Familyship.checkkuleogi.domains.child.domain.Child;
 import com.Familyship.checkkuleogi.domains.child.domain.ChildMBTI;
 import com.Familyship.checkkuleogi.domains.child.domain.ChildMBTILog;
 import com.Familyship.checkkuleogi.domains.child.dto.*;
-import com.Familyship.checkkuleogi.domains.child.infra.ChildMBTILogRepository;
-import com.Familyship.checkkuleogi.domains.child.infra.ChildMBTIRepository;
-import com.Familyship.checkkuleogi.domains.child.infra.ChildRepository;
-import com.Familyship.checkkuleogi.domains.like.Infra.LikeRepository;
-import com.Familyship.checkkuleogi.domains.like.domain.BookLike;
+import com.Familyship.checkkuleogi.domains.child.domain.repository.ChildMBTILogRepository;
+import com.Familyship.checkkuleogi.domains.child.domain.repository.ChildMBTIRepository;
+import com.Familyship.checkkuleogi.domains.child.domain.repository.ChildRepository;
+import com.Familyship.checkkuleogi.domains.like.domain.repository.BookLikeRepository;
 import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ChildServiceImpl implements ChildService {
     private final ChildMBTIRepository childMBTIRepository;
     private final ChildRepository childRepository;
-    private final LikeRepository likeRepository;
+    private final BookLikeRepository likeRepository;
     private final ChildMBTILogRepository childMBTILogRepository;
 
     @Override
@@ -59,7 +57,8 @@ public class ChildServiceImpl implements ChildService {
                 mbtiS(mbtiPercent[1]).
                 mbtiT(mbtiPercent[2]).
                 mbtiJ(mbtiPercent[3]).
-                childIdx(childIdx).build();
+                build();
+//                childIdx(childIdx).build();
         ChildMBTILog childMBTILog = ChildMBTILog.builder().
                 mbtiE(mbtiPercent[0]).
                 mbtiS(mbtiPercent[1]).
@@ -126,9 +125,9 @@ public class ChildServiceImpl implements ChildService {
                 .orElseThrow(() -> new NotFoundException("저장된 MBTI가 없습니다"));
 
         // 논리적 삭제 -> 좋아요 테이블에 childIdx를 기준으로 좋아요가 되어 있는 책을 모두 찾아서 idDeleted 컬럼을 N -> Y로 바꿔준다.
-        List<BookLike> bookList = likeRepository.findByChildIdxAndIsDeleted(child.getIdx(), false)
-                .orElseThrow(() -> new NotFoundException("좋아요를 한 책이 없습니다"));
-        bookList.forEach(books -> books.updateIsDeleted(true));
+//        List<BookLike> bookList = likeRepository.findByChildIdxAndIsDeleted(child.getIdx(), false)
+//                .orElseThrow(() -> new NotFoundException("좋아요를 한 책이 없습니다"));
+//        bookList.forEach(books -> books.updateIsDeleted(true));
 
         // MBTI 로우 테이블 삭제
         childMBTIRepository.delete(childMBTI);
