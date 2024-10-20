@@ -3,16 +3,30 @@ package com.Familyship.checkkuleogi.domains.user.domain;
 import com.Familyship.checkkuleogi.domains.child.domain.Child;
 import com.Familyship.checkkuleogi.domains.user.domain.enums.Role;
 import com.Familyship.checkkuleogi.global.domain.BaseEntity;
+
 import jakarta.persistence.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+
+import java.util.Collection;
 import java.util.List;
 
+
+@Builder
 @Entity
 @Getter
 @Table(name="user")
-public class SiteUser extends BaseEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public class SiteUser extends BaseEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_idx")
@@ -42,4 +56,35 @@ public class SiteUser extends BaseEntity {
 
     @OneToMany(mappedBy = "parent")
     private List<Child> children;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
