@@ -51,7 +51,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/admin/**").hasRole("ADMIN")  // /admin/** 경로는 ADMIN 권한 필요
                 .requestMatchers("/user/**").permitAll() // /user/** 경로는 권한 필요 없음
-                .requestMatchers("/test/**").hasRole("USER")
+                .anyRequest().hasRole("USER") // 나머지는 user 권한 필요
         );
 
         return http.build();
