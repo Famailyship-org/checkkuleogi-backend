@@ -55,6 +55,7 @@ public class SiteUser extends BaseEntity implements UserDetails {
     @Column(name = "user_role")
     private Role role;
 
+
     @OneToMany(mappedBy = "parent")
     private List<Child> children;
 
@@ -87,5 +88,6 @@ public class SiteUser extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 
 }

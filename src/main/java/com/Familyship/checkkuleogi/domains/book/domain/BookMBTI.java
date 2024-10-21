@@ -14,19 +14,14 @@ public class BookMBTI extends BaseEntity {
     private Long idx;
 
     @Column(name = "mbti_e")
-    private int mbtiE;
+    private Integer mbtiE;
 
     @Column(name = "mbti_s")
-    private int mbtiS;
+    private Integer mbtiS;
 
     @Column(name = "mbti_t")
-    private int mbtiT;
+    private Integer mbtiT;
 
     @Column(name = "mbti_j")
-    private int mbtiJ;
-
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "book_idx", referencedColumnName = "book_idx")
-    @Column(name = "book_idx")
-    private Long bookIdx;
+    private Integer mbtiJ;
 }

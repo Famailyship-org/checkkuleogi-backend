@@ -2,11 +2,17 @@ package com.Familyship.checkkuleogi.domains.child.domain;
 
 import com.Familyship.checkkuleogi.global.domain.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "child_mbti")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChildMBTI extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +31,6 @@ public class ChildMBTI extends BaseEntity {
     @Column(name = "mbti_j")
     private int mbtiJ;
 
-    //    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "child_idx", referencedColumnName = "child_idx")
     @Column(name = "child_idx")
     private Long childIdx;
 }
