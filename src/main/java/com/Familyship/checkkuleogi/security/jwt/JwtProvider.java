@@ -2,6 +2,8 @@ package com.Familyship.checkkuleogi.security.jwt;
 
 import com.Familyship.checkkuleogi.domains.user.domain.enums.Role;
 
+import com.Familyship.checkkuleogi.global.domain.exception.BadRequestException;
+import com.Familyship.checkkuleogi.global.domain.exception.IllegalParameterException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
@@ -12,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +25,10 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -31,9 +37,6 @@ import java.util.Date;
 public class JwtProvider {
     @Value("${jwt.secret}")
     String secretKey;
-
-    @Value("${jwt.expiration}")
-    private long tokenValidTime;
 
     private final UserDetailsService userDetailsService;
 
@@ -47,10 +50,17 @@ public class JwtProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String userPk, Role role) {
-        Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보
-        claims.put("roles", role.name()); // key-value 쌍으로 역할 저장
+    public String createToken(Long userPk, Collection<? extends GrantedAuthority> authorities) {
+        Claims claims = Jwts.claims().setSubject(String.valueOf(userPk)); // JWT payload 에 저장되는 정보
+
+        List<String> roles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)  // GrantedAuthority에서 권한 정보 추출
+                .collect(Collectors.toList());
+
+        claims.put("roles", roles); // key-value 쌍으로 역할 저장
         Date now = new Date();
+
+        long tokenValidTime = 1000L * 60 * 60;
 
         return Jwts.builder()
                 .setClaims(claims) // 사용자 정보 저장
@@ -62,13 +72,20 @@ public class JwtProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        // 토큰에서 사용자 정보(PK)를 추출
+        String userPk = getUserIdFromToken(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
+
+        // JWT에서 roles 정보로부터 권한 설정
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+
+        // 사용자 정보로 Authentication 객체를 생성하고 반환
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
-    public String getUserPk(String token) {
+    public String getUserIdFromToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))  // SecretKey로 서명 설정
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -78,9 +95,9 @@ public class JwtProvider {
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7); // "Bearer " 이후의 JWT 토큰 부분만 추출
+            return bearerToken.substring(7); // "Bearer " 이후의 토큰 부분만 반환
         }
-        return null; // Authorization 헤더가 없거나 형식이 잘못된 경우
+        return null;
     }
 
     public boolean validateToken(String token) {
@@ -89,9 +106,8 @@ public class JwtProvider {
             return true;
         } catch (SecurityException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException |
                  IllegalArgumentException e) {
-            log.info(e.getMessage());
+            return false;
         }
-        return false;
     }
 
 }

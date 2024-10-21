@@ -50,8 +50,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/admin/**").hasRole("ADMIN")  // /admin/** 경로는 ADMIN 권한 필요
-                .requestMatchers("/user/**").permitAll() // /user/** 경로는 USER 권한 필요
-                .requestMatchers("/**").permitAll()             // 그 외 경로는 모두 접근 허용
+                .requestMatchers("/user/**").permitAll() // /user/** 경로는 권한 필요 없음
+                .requestMatchers("/test/**").hasRole("USER")
         );
 
         return http.build();
