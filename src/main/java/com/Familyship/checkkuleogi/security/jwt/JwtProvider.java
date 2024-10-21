@@ -1,9 +1,5 @@
 package com.Familyship.checkkuleogi.security.jwt;
 
-import com.Familyship.checkkuleogi.domains.user.domain.enums.Role;
-
-import com.Familyship.checkkuleogi.global.domain.exception.BadRequestException;
-import com.Familyship.checkkuleogi.global.domain.exception.IllegalParameterException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
