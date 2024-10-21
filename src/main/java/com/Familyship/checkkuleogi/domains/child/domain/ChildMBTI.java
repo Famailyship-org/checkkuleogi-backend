@@ -30,4 +30,7 @@ public class ChildMBTI extends BaseEntity {
 
     @Column(name = "mbti_j")
     private int mbtiJ;
+
+    @Column(name = "child_idx")
+    private Long childIdx;
 }
