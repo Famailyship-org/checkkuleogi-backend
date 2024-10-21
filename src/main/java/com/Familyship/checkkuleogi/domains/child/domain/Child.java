@@ -2,7 +2,6 @@ package com.Familyship.checkkuleogi.domains.child.domain;
 
 import com.Familyship.checkkuleogi.domains.user.domain.SiteUser;
 import com.Familyship.checkkuleogi.global.domain.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,8 +44,9 @@ public class Child extends BaseEntity {
     @JoinColumn(name = "child_mbti_id")
     private ChildMBTI childMBTI;
 
-    public void updateMBTI(String mbti) {
+    public void updateChildMbtiInfo(String mbti, ChildMBTI childMBTI) {
         this.mbti = mbti;
+        this.childMBTI = childMBTI;
     }
 
     public boolean isMBTINull(String mbti) {
