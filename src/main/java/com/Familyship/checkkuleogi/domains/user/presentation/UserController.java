@@ -1,23 +1,32 @@
 package com.Familyship.checkkuleogi.domains.user.presentation;
 
-import com.Familyship.checkkuleogi.global.domain.exception.NotFoundException;
+import com.Familyship.checkkuleogi.domains.user.dto.request.CreateUserRequestDTO;
+import com.Familyship.checkkuleogi.domains.user.dto.request.LoginUserRequestDTO;
+import com.Familyship.checkkuleogi.domains.user.dto.response.CreateUserResponseDTO;
+import com.Familyship.checkkuleogi.domains.user.dto.response.LoginUserResponseDTO;
+import com.Familyship.checkkuleogi.domains.user.service.UserService;
+
 import com.Familyship.checkkuleogi.global.domain.response.CommonResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import static com.Familyship.checkkuleogi.global.domain.response.CommonResponseEntity.success;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping("/test")
-    public CommonResponseEntity<Object> test(){
-        Object a = "int";
-        if(a != null){
-            throw new NotFoundException("에러를 작성해봐요");
-        }
-        return success(a);
+    private final UserService userService;
+
+    @PostMapping("/join")
+    public CommonResponseEntity<CreateUserResponseDTO> join(@RequestBody CreateUserRequestDTO user) {
+        return success(userService.join(user));
     }
+
+    @PostMapping("/login")
+    public CommonResponseEntity<LoginUserResponseDTO> login(@RequestBody LoginUserRequestDTO user) {
+        return success(userService.login(user));
+    }
+
 }
